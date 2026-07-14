@@ -1,21 +1,31 @@
 <!DOCTYPE html>
 <html>
 <head><title>Custom DEX Clone</title>
-<style>body {font-family: Arial; text-align: center; padding: 50px;} button {padding: 15px 30px; margin: 10px; font-size: 18px;}</style>
+<style>body {font-family: Arial; text-align: center; padding: 50px; background: #f8f9fa;} button {padding: 15px 30px; margin: 10px; font-size: 18px; background: #007bff; color: white; border: none; border-radius: 8px; cursor: pointer;} button:hover {background: #0056b3;} .btc {background: #f7931a; color: white;} .wallet {font-family: monospace; background: #fff; padding: 10px; border: 1px solid #ddd; margin: 10px auto; max-width: 400px;}</style>
 </head>
 <body>
 <h1>Your Custom Uniswap DEX Clone</h1>
-<p>Connect MetaMask and swap. Send tips to my wallet.</p>
-<button id="connect">Connect Wallet</button>
+<p>Connect wallet for demo swaps. Send BTC tips to support.</p>
+
+<button id="connect">Connect MetaMask (Demo)</button>
 <div id="status"></div>
-<button id="send">Send 0.01 ETH Tip to Support</button>
+
+<div class="wallet">
+  <strong>Send BTC Tips Here:</strong><br>
+  <span id="btc-address">bc1qr098y8p975xth6pfp8ymcmfy3vtucsaym0nwh8</span>
+</div>
+<button id="copy-btc" class="btc">Copy BTC Address</button>
+<button id="send-eth">Send 0.01 ETH Tip (Demo)</button>
 
 <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
 <script>
 const connectBtn = document.getElementById('connect');
 const status = document.getElementById('status');
-const sendBtn = document.getElementById('send');
+const sendEthBtn = document.getElementById('send-eth');
+const copyBtcBtn = document.getElementById('copy-btc');
 let provider, signer, userAddress;
+
+const btcAddress = 'bc1qr098y8p975xth6pfp8ymcmfy3vtucsaym0nwh8';
 
 connectBtn.onclick = async () => {
   if (window.ethereum) {
@@ -27,14 +37,20 @@ connectBtn.onclick = async () => {
   } else alert("Install MetaMask");
 };
 
-sendBtn.onclick = async () => {
-  if (!signer) return alert("Connect first");
+copyBtcBtn.onclick = () => {
+  navigator.clipboard.writeText(btcAddress).then(() => {
+    status.innerHTML = 'BTC address copied! Send to: ' + btcAddress;
+  });
+};
+
+sendEthBtn.onclick = async () => {
+  if (!signer) return alert("Connect MetaMask first");
   try {
     const tx = await signer.sendTransaction({
-      to: "YOUR_WALLET_HERE", // REPLACE THIS
+      to: "0xYourETHAddressHere", // Add your ETH address if wanted
       value: ethers.utils.parseEther("0.01")
     });
-    status.innerHTML += `<br>TX sent: ${tx.hash}`;
+    status.innerHTML += `<br>ETH TX sent: ${tx.hash}`;
   } catch(e) { status.innerHTML = "Error: " + e.message; }
 };
 </script>
