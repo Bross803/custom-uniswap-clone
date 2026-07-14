@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head><title>Custom DEX Clone</title>
+<style>body {font-family: Arial; text-align: center; padding: 50px;} button {padding: 15px 30px; margin: 10px; font-size: 18px;}</style>
+</head>
+<body>
+<h1>Your Custom Uniswap DEX Clone</h1>
+<p>Connect MetaMask and swap. Send tips to my wallet.</p>
+<button id="connect">Connect Wallet</button>
+<div id="status"></div>
+<button id="send">Send 0.01 ETH Tip to Support</button>
+
+<script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+<script>
+const connectBtn = document.getElementById('connect');
+const status = document.getElementById('status');
+const sendBtn = document.getElementById('send');
+let provider, signer, userAddress;
+
+connectBtn.onclick = async () => {
+  if (window.ethereum) {
+    provider = new ethers.providers.Web3Provider(window.ethereum);
+    await provider.send("eth_requestAccounts", []);
+    signer = provider.getSigner();
+    userAddress = await signer.getAddress();
+    status.innerHTML = `Connected: ${userAddress.substring(0,6)}...`;
+  } else alert("Install MetaMask");
+};
+
+sendBtn.onclick = async () => {
+  if (!signer) return alert("Connect first");
+  try {
+    const tx = await signer.sendTransaction({
+      to: "YOUR_WALLET_HERE", // REPLACE THIS
+      value: ethers.utils.parseEther("0.01")
+    });
+    status.innerHTML += `<br>TX sent: ${tx.hash}`;
+  } catch(e) { status.innerHTML = "Error: " + e.message; }
+};
+</script>
+</body>
+</html>
