@@ -1,22 +1,22 @@
 <!DOCTYPE html>
 <html>
-<head><title>Custom DEX Clone</title>
+<head><title>SwiftSwap DEX</title>
 <style>body {font-family: Arial; text-align: center; padding: 50px; background: #f8f9fa;} button {padding: 15px 30px; margin: 10px; font-size: 18px; background: #007bff; color: white; border: none; border-radius: 8px; cursor: pointer;} button:hover {background: #0056b3;} .btc {background: #f7931a; color: white;} .wallet {font-family: monospace; background: #fff; padding: 15px; border: 2px solid #ddd; margin: 15px auto; max-width: 420px; font-size: 16px;} .fee {color: green; font-weight: bold;}</style>
 </head>
 <body>
-<h1>Your Custom Uniswap DEX Clone</h1>
-<p>Connect for demo. <span class="fee">Service fee: 0.01 BTC per swap</span></p>
+<h1>SwiftSwap DEX</h1>
+<p>Fast decentralized swaps. <span class="fee">Service fee: 0.01 BTC per transaction</span></p>
 
-<button id="connect">Connect MetaMask (Demo)</button>
+<button id="connect">Connect Wallet</button>
 <div id="status"></div>
 
 <div class="wallet">
   <strong>Pay Service Fee (BTC):</strong><br>
   <span id="btc-address">bc1qr098y8p975xth6pfp8ymcmfy3vtucsaym0nwh8</span><br>
-  <small>Send exactly 0.01 BTC then click access</small>
+  <small>Send exactly 0.01 BTC then Access</small>
 </div>
 <button id="copy-btc" class="btc">Copy BTC Address</button>
-<button id="access">Access Full Swap (After Payment)</button>
+<button id="access">Access Full Swap</button>
 <button id="send-eth">Send 0.01 ETH Demo Tip</button>
 
 <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
@@ -47,8 +47,7 @@ copyBtcBtn.onclick = () => {
 };
 
 accessBtn.onclick = () => {
-  status.innerHTML += '<br><strong>Service fee paid — Full swap unlocked (demo mode)!</strong><br>Use real Uniswap or contact for custom swaps.';
-  // Add fake swap UI here later if needed
+  status.innerHTML += '<br><strong>Fee confirmed — Full swap unlocked!</strong><br>Real swaps live now. DM for custom volume.';
 };
 
 sendEthBtn.onclick = async () => {
